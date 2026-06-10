@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "node --dns-result-order=ipv4first ./node_modules/tsx/dist/cli.mjs watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit",
@@ -35,6 +35,8 @@
     "@commitlint/cli": "^21.0.2",
     "@commitlint/config-conventional": "^21.0.2",
     "@eslint/js": "^10.0.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^25.9.2",
     "eslint": "^10.4.1",
     "eslint-config-prettier": "^10.1.8",
@@ -44,5 +46,13 @@
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.61.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "helmet": "^8.2.0",
+    "mongoose": "^9.7.0",
+    "zod": "^4.4.3"
   }
 }

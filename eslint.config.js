@@ -12,10 +12,14 @@ export default tseslint.config(
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
+      globals: {
+        process: 'readonly',
+      },
     },
     rules: {
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
       '@typescript-eslint/consistent-type-imports': 'error',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
     },
   },
   {
