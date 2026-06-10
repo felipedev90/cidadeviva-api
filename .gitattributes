@@ -1,0 +1,5 @@
+* text=auto eol=lf
+
+# Força LF como terminador de linha para arquivos de texto
+# Isso é importante para garantir a consistência entre diferentes sistemas operacionais
+# e evitar problemas de formatação em arquivos de código-fonte, documentação, etc.

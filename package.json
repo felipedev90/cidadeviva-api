@@ -1,0 +1,26 @@
+{
+  "name": "cidadeviva-api",
+  "version": "1.0.0",
+  "description": "API de blog sobre cultura urbana, ciclismo e lifestyle",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "cultura urbana",
+    "ciclismo",
+    "lifestyle"
+  ],
+  "author": "Felipe Augusto",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^25.9.2",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3"
+  }
+}
