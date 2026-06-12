@@ -34,6 +34,13 @@ export const updateComment = async (req: Request, res: Response): Promise<void> 
     return
   }
 
+  if (comment.author.toString() !== req.userId) {
+    res.status(403).json({
+      message: 'Você não tem permissão para editar este comentário',
+    })
+    return
+  }
+
   if (content) comment.content = content
   await comment.save()
   res.json(comment)
@@ -46,6 +53,13 @@ export const deleteComment = async (req: Request, res: Response): Promise<void> 
   if (!comment) {
     res.status(404).json({
       message: 'Comentário não encontrado',
+    })
+    return
+  }
+
+  if (comment.author.toString() !== req.userId) {
+    res.status(403).json({
+      message: 'Você não tem permissão para deletar este comentário',
     })
     return
   }
