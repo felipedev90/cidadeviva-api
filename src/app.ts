@@ -4,6 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import { env } from './config/env.js'
 import postRoutes from './routes/post.routes.js'
+import authRoutes from './routes/auth.routes.js'
 
 import './models/user.model.js'
 import './models/post.model.js'
@@ -22,6 +23,7 @@ if (env.NODE_ENV === 'development') {
   app.use(morgan('dev'))
 }
 app.use('/api/v1', postRoutes)
+app.use('/api/v1/auth', authRoutes)
 
 // ROTA DE HEALTH CHECK
 app.get('/health', (_req, res) => {
