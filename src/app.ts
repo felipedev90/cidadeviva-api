@@ -5,9 +5,11 @@ import morgan from 'morgan'
 import { env } from './config/env.js'
 import postRoutes from './routes/post.routes.js'
 import authRoutes from './routes/auth.routes.js'
+import commentRoutes from './routes/comment.routes.js'
 
 import './models/user.model.js'
 import './models/post.model.js'
+import './models/comment.model.js'
 
 const app = express()
 
@@ -24,6 +26,7 @@ if (env.NODE_ENV === 'development') {
 }
 app.use('/api/v1', postRoutes)
 app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/posts/:postId/comments', commentRoutes)
 
 // ROTA DE HEALTH CHECK
 app.get('/health', (_req, res) => {
