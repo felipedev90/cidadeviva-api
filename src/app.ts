@@ -6,6 +6,7 @@ import { env } from './config/env.js'
 import postRoutes from './routes/post.routes.js'
 import authRoutes from './routes/auth.routes.js'
 import commentRoutes from './routes/comment.routes.js'
+import { errorMiddleware } from './middlewares/error.middleware.js'
 
 import './models/user.model.js'
 import './models/post.model.js'
@@ -32,5 +33,8 @@ app.use('/api/v1/posts/:postId/comments', commentRoutes)
 app.get('/health', (_req, res) => {
   res.status(200).json({ status: 'success', message: 'API online ✌️' })
 })
+
+// MIDDLEWARE DE ERRO
+app.use(errorMiddleware)
 
 export { app }
