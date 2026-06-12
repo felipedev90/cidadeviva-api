@@ -3,11 +3,30 @@ import { Comment } from '../models/comment.model.js'
 import type { CreateCommentInput, UpdateCommentInput } from '../schemas/comment.schema.js'
 
 export const getCommentsByPost = async (req: Request, res: Response): Promise<void> => {
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.limit) || 10
   const { postId } = req.params
+
+  const total = await Comment.countDocuments({ post: postId })
+
   const comments = await Comment.find({
     post: postId,
-  }).populate('author', 'name')
-  res.json(comments)
+  })
+    .populate('author', 'name')
+    .skip((page - 1) * limit)
+    .limit(limit)
+
+  res.json({
+    status: 'success',
+    results: comments.length,
+    data: { comments },
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  })
 }
 
 export const createComment = async (req: Request, res: Response): Promise<void> => {
