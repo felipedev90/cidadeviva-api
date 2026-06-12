@@ -21,7 +21,7 @@ export const getCommentsByPost = async (
       .skip((page - 1) * limit)
       .limit(limit)
 
-    res.json({
+    res.status(200).json({
       status: 'success',
       results: comments.length,
       data: { comments },
@@ -51,7 +51,10 @@ export const createComment = async (
       author: req.userId,
       post: postId,
     })
-    res.json(comment)
+    res.status(201).json({
+      status: 'success',
+      data: { comment },
+    })
   } catch (error) {
     next(error)
   }
@@ -69,6 +72,7 @@ export const updateComment = async (
 
     if (!comment) {
       res.status(404).json({
+        status: 'fail',
         message: 'Comentário não encontrado',
       })
       return
@@ -76,6 +80,7 @@ export const updateComment = async (
 
     if (comment.author.toString() !== req.userId) {
       res.status(403).json({
+        status: 'fail',
         message: 'Você não tem permissão para editar este comentário',
       })
       return
@@ -83,7 +88,10 @@ export const updateComment = async (
 
     if (content) comment.content = content
     await comment.save()
-    res.json(comment)
+    res.status(200).json({
+      status: 'success',
+      data: { comment },
+    })
   } catch (error) {
     next(error)
   }
@@ -100,6 +108,7 @@ export const deleteComment = async (
 
     if (!comment) {
       res.status(404).json({
+        status: 'fail',
         message: 'Comentário não encontrado',
       })
       return
@@ -107,15 +116,14 @@ export const deleteComment = async (
 
     if (comment.author.toString() !== req.userId) {
       res.status(403).json({
+        status: 'fail',
         message: 'Você não tem permissão para deletar este comentário',
       })
       return
     }
 
     await comment.deleteOne()
-    res.json({
-      message: 'Comentário deletado com sucesso',
-    })
+    res.status(204).send()
   } catch (error) {
     next(error)
   }

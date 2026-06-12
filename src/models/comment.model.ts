@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, type Types } from 'mongoose'
+import { Schema, model, type Types } from 'mongoose'
 
 type CommentDocument = {
   content: string
@@ -17,12 +17,12 @@ const commentSchema = new Schema<CommentDocument>(
       maxlength: [500, 'O comentário deve conter no máximo 500 caracteres'],
     },
     author: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'User',
       required: [true, 'Autor é obrigatório'],
     },
     post: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: 'Post',
       required: [true, 'Post é obrigatório'],
     },
