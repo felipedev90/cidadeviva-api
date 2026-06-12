@@ -38,7 +38,7 @@ export const createPost = async (
   req: Request<object, object, CreatePostInput>,
   res: Response,
 ): Promise<void> => {
-  const post = await Post.create(req.body)
+  const post = await Post.create({ ...req.body, author: req.userId })
 
   res.status(201).json({
     status: 'success',
