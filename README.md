@@ -12,7 +12,7 @@ API REST de blog sobre cultura urbana, ciclismo e lifestyle da cidade de Jundia�
 
 ## Requisitos
 
-- Node.js 18+
+- Node.js 24+
 - MongoDB Atlas ou instância local
 
 ## Instalação
@@ -34,7 +34,7 @@ Preencha as variáveis:
 ```env
 PORT=3000
 NODE_ENV=development
-MONGODB_URI=sua_uri_do_mongodb
+DATABASE_URL=sua_uri_do_mongodb
 JWT_SECRET=seu_secret
 JWT_EXPIRES_IN=7d
 ```
@@ -107,13 +107,37 @@ O token e retornado no login e no registro.
 ## Estrutura do projeto
 
 ```
+## Estrutura do projeto
+
 src/
-  config/       # variaveis de ambiente
-  controllers/  # logica das rotas
-  middlewares/  # autenticacao, validacao e erro global
-  models/       # schemas do Mongoose
-  routes/       # definicao das rotas
-  schemas/      # validacao com Zod
-  server.ts     # inicializacao do servidor
-  app.ts        # configuracao do Express
+├── app.ts                          # Configuração do Express (middlewares globais, rotas, error handler)
+├── server.ts                       # Ponto de entrada — conecta banco e sobe o servidor
+├── config/
+│   ├── database.ts                 # Conexão com o MongoDB via Mongoose
+│   └── env.ts                      # Validação e tipagem das variáveis de ambiente (Zod)
+├── controllers/
+│   ├── auth.controller.ts          # Registro e login
+│   ├── comment.controller.ts       # CRUD de comentários
+│   └── post.controller.ts          # CRUD de posts
+├── middlewares/
+│   ├── authenticate.ts             # Verifica token JWT e injeta userId no req
+│   ├── error.middleware.ts         # Tratamento de erro global
+│   └── validate.ts                 # Valida req.body com schema Zod
+├── models/
+│   ├── comment.model.ts            # Schema e Model de comentário
+│   ├── post.model.ts               # Schema e Model de post
+│   └── user.model.ts               # Schema e Model de usuário
+├── routes/
+│   ├── auth.routes.ts              # POST /api/v1/auth/register e /login
+│   ├── comment.routes.ts           # Rotas aninhadas /api/v1/posts/:postId/comments
+│   └── post.routes.ts              # Rotas /api/v1/posts
+├── schemas/
+│   ├── auth.schema.ts              # Schemas Zod de registro e login
+│   ├── comment.schema.ts           # Schemas Zod de comentário
+│   └── post.schema.ts              # Schemas Zod de post
+├── types/
+│   └── express.d.ts                # Augment do tipo Request (adiciona userId)
+└── utils/
+    ├── app-error.ts                # Classe de erro customizada com statusCode
+    └── catch-async.ts              # Wrapper que elimina try/catch nos controllers
 ```
