@@ -1,16 +1,13 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import type { Request, Response, NextFunction } from 'express'
+import type { Request, Response } from 'express'
 import type { LoginInput, RegisterInput } from '../schemas/auth.schema.js'
 import { User } from '../models/user.model.js'
 import { env } from '../config/env.js'
+import { catchAsync } from '../utils/catch-async.js'
 
-export const register = async (
-  req: Request<object, object, RegisterInput>,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  try {
+export const register = catchAsync(
+  async (req: Request<object, object, RegisterInput>, res: Response): Promise<void> => {
     const { name, email, password } = req.body
 
     const existingUser = await User.findOne({
@@ -47,17 +44,11 @@ export const register = async (
         token,
       },
     })
-  } catch (err) {
-    next(err)
-  }
-}
+  },
+)
 
-export const login = async (
-  req: Request<object, object, LoginInput>,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
-  try {
+export const login = catchAsync(
+  async (req: Request<object, object, LoginInput>, res: Response): Promise<void> => {
     const { email, password } = req.body
 
     const user = await User.findOne({ email }).select('+password')
@@ -101,7 +92,5 @@ export const login = async (
         token,
       },
     })
-  } catch (err) {
-    next(err)
-  }
-}
+  },
+)
