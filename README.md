@@ -141,3 +141,5 @@ src/
     ├── app-error.ts                # Classe de erro customizada com statusCode
     └── catch-async.ts              # Wrapper que elimina try/catch nos controllers
 ```
+
+Desenvolvido por Felipe Augusto ✌️
