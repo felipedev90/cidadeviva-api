@@ -4,6 +4,7 @@ import type { Types } from 'mongoose'
 type PostCategory = 'ciclismo' | 'gastronomia' | 'cultura' | 'eventos'
 
 type PostDocument = {
+  coverImage: string
   title: string
   slug: string
   content: string
@@ -17,6 +18,11 @@ type PostDocument = {
 
 const postSchema = new Schema<PostDocument>(
   {
+    coverImage: {
+      type: String,
+      required: [true, 'Imagem de capa é obrigatória'],
+      trim: true,
+    },
     title: {
       type: String,
       required: [true, 'Título é obrigatório'],

@@ -1,7 +1,9 @@
 import type { Request, Response } from 'express'
 import { Post } from '../models/post.model.js'
+import { AppError } from '../utils/app-error.js'
 import type { CreatePostInput, UpdatePostInput } from '../schemas/post.schema.js'
 import { catchAsync } from '../utils/catch-async.js'
+import { uploadToCloudinary } from '../utils/upload-image.js'
 
 export const getAllPosts = catchAsync(async (req: Request, res: Response): Promise<void> => {
   const page = Number(req.query.page) || 1
@@ -53,7 +55,12 @@ export const getPostBySlug = catchAsync(async (req: Request, res: Response): Pro
 
 export const createPost = catchAsync(
   async (req: Request<object, object, CreatePostInput>, res: Response): Promise<void> => {
-    const post = await Post.create({ ...req.body, author: req.userId })
+    if (!req.file) {
+      throw new AppError('Imagem de capa é obrigatória.', 400)
+    }
+
+    const coverImageUrl = await uploadToCloudinary(req.file.buffer)
+    const post = await Post.create({ ...req.body, author: req.userId, coverImage: coverImageUrl })
 
     res.status(201).json({
       status: 'success',
