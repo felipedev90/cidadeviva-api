@@ -12,7 +12,8 @@
     "lint": "eslint src",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "vitest"
+    "test": "vitest",
+    "seed": "node --dns-result-order=ipv4first ./node_modules/tsx/dist/cli.mjs src/seed.ts"
   },
   "lint-staged": {
     "*.ts": [
