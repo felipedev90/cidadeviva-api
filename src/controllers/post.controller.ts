@@ -60,7 +60,16 @@ export const createPost = catchAsync(
     }
 
     const coverImageUrl = await uploadToCloudinary(req.file.buffer)
-    const post = await Post.create({ ...req.body, author: req.userId, coverImage: coverImageUrl })
+    let post
+
+    try {
+      post = await Post.create({ ...req.body, author: req.userId, coverImage: coverImageUrl })
+    } catch (error) {
+      if (error && typeof error === 'object' && 'code' in error && error.code === 11000) {
+        throw new AppError('Slug já existe. Por favor, escolha outro.', 409)
+      }
+      throw error
+    }
 
     res.status(201).json({
       status: 'success',
