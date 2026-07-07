@@ -41,6 +41,31 @@ export const getAllPosts = catchAsync(async (req: Request, res: Response): Promi
   })
 })
 
+export const getMyPosts = catchAsync(async (req: Request, res: Response): Promise<void> => {
+  const page = Number(req.query.page) || 1
+  const limit = Number(req.query.limit) || 10
+
+  const total = await Post.countDocuments({ author: req.userId })
+
+  const posts = await Post.find({ author: req.userId })
+    .populate('author', 'name email')
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit)
+    .limit(limit)
+
+  res.status(200).json({
+    status: 'success',
+    results: posts.length,
+    data: { posts },
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    },
+  })
+})
+
 export const getPostBySlug = catchAsync(async (req: Request, res: Response): Promise<void> => {
   const { slug } = req.params
   const post = await Post.findOne({ slug, published: true }).populate('author', 'name email')

@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import {
   getAllPosts,
+  getMyPosts,
   getPostBySlug,
   createPost,
   updatePost,
@@ -14,6 +15,7 @@ import { authenticate } from '../middlewares/authenticate.js'
 const router = Router()
 
 router.get('/posts', getAllPosts)
+router.get('/posts/mine', authenticate, getMyPosts)
 router.get('/posts/:slug', getPostBySlug)
 
 router.post(
