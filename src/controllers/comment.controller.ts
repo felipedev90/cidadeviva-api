@@ -39,6 +39,9 @@ export const createComment = catchAsync(async (req: Request, res: Response): Pro
     author: req.userId,
     post: postId,
   })
+
+  await comment.populate('author', 'name')
+
   res.status(201).json({
     status: 'success',
     data: { comment },
