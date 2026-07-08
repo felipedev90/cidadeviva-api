@@ -3,6 +3,7 @@ import {
   getAllPosts,
   getMyPosts,
   getPostBySlug,
+  getMyPostBySlug,
   createPost,
   updatePost,
   deletePost,
@@ -16,6 +17,7 @@ const router = Router()
 
 router.get('/posts', getAllPosts)
 router.get('/posts/mine', authenticate, getMyPosts)
+router.get('/posts/mine/:slug', authenticate, getMyPostBySlug)
 router.get('/posts/:slug', getPostBySlug)
 
 router.post(

@@ -78,6 +78,20 @@ export const getPostBySlug = catchAsync(async (req: Request, res: Response): Pro
   res.status(200).json({ status: 'success', data: { post } })
 })
 
+export const getMyPostBySlug = catchAsync(async (req: Request, res: Response): Promise<void> => {
+  const post = await Post.findOne({
+    slug: req.params.slug,
+    author: req.userId,
+  }).populate('author', 'name email')
+
+  if (!post) {
+    res.status(404).json({ status: 'fail', message: 'Post não encontrado' })
+    return
+  }
+
+  res.status(200).json({ status: 'success', data: { post } })
+})
+
 export const createPost = catchAsync(
   async (req: Request<object, object, CreatePostInput>, res: Response): Promise<void> => {
     if (!req.file) {
