@@ -7,7 +7,10 @@ export const createPostSchema = z.object({
   content: z.string().min(10, 'O conteúdo deve conter pelo menos 10 caracteres'),
   excerpt: z.string().max(300, 'O resumo deve conter no máximo 300 caracteres'),
   category: z.enum(['ciclismo', 'gastronomia', 'cultura', 'eventos']),
-  published: z.boolean().optional(),
+  published: z
+    .union([z.boolean(), z.string()])
+    .transform((val) => val === true || val === 'true')
+    .optional(),
 })
 
 // Esquema para atualização de post, onde todos os campos são opcionais
