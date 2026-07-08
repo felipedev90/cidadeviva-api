@@ -25,7 +25,13 @@ router.post(
   validate(createPostSchema),
   createPost,
 )
-router.patch('/posts/:slug', authenticate, validate(updatePostSchema), updatePost)
+router.patch(
+  '/posts/:slug',
+  authenticate,
+  upload.single('coverImage'),
+  validate(updatePostSchema),
+  updatePost,
+)
 router.delete('/posts/:slug', authenticate, deletePost)
 
 export default router
