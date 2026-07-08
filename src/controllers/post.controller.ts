@@ -105,6 +105,10 @@ export const createPost = catchAsync(
 
 export const updatePost = catchAsync(
   async (req: Request<{ slug: string }, object, UpdatePostInput>, res: Response): Promise<void> => {
+    if (req.file) {
+      const imageUrl = await uploadToCloudinary(req.file.buffer)
+      req.body = { ...req.body, coverImage: imageUrl } as UpdatePostInput & { coverImage: string }
+    }
     const post = await Post.findOneAndUpdate({ slug: req.params.slug }, req.body, {
       new: true,
       runValidators: true,
