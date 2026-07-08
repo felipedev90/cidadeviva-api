@@ -94,3 +94,14 @@ export const login = catchAsync(
     })
   },
 )
+
+export const getMe = catchAsync(async (req: Request, res: Response): Promise<void> => {
+  const user = await User.findById(req.userId).select('name email')
+
+  if (!user) {
+    res.status(404).json({ status: 'fail', message: 'Usuário não encontrado' })
+    return
+  }
+
+  res.status(200).json({ status: 'success', data: { user } })
+})
